@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>States</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
+    th:href="@{/bootstrap/css/bootstrap.min.css}">
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkMUEDzZ_3CHXPpxdzMriVb7a8avF0Wfc&callback=initMap" async defer></script>
+
+    <script th:inline="javascript">
+
+        var stateCoordinates = [
+            ["Yangon", 16.8409, 96.1735],
+            ["Mandalay", 21.9588, 96.0891],
+            ["NayPyiThaw", 19.7633, 96.0785],
+            ["Chin", 22.0087, 93.5813],
+            ["Yakhine", 20.1041, 93.5813],
+            ["Shan", 22.0362, 98.1339]
+        ];
+
+        var map;
+        var markers = [];
+
+        async function initMap() {
+            const {Map} = await google.maps.importLibrary("maps");
+            const {Marker} = await google.maps.importLibrary("marker");
+
+            map = new google.maps.Map(document.getElementById('map_div'), {
+                center: {lat: 16.8409, lng: 96.1735},
+                zoom: 8
+            });
+
+            var stateSelect = document.getElementById('selectState');
+            stateSelect.addEventListener('change', function () {
+                var selectState = this.value;
+                if (selectState !== '') {
+                    var coordinates = stateCoordinates.find(function(state) {
+                        return state[0] === selectState;
+                    });
+                    if (coordinates) {
+                        removeAllMarkers();
+                        map.setCenter({ lat: coordinates[1], lng: coordinates[2] });
+                        placeMarker({ lat: coordinates[1], lng: coordinates[2] });
+                    }
+                }
+            });
+
+            document.getElementById('searchButton').addEventListener('click', function() {
+                var selectState = stateSelect.value;
+                if (selectState !== ''){
+                    var coordinates = stateCoordinates.find(function (state){
+                        return state[0] === selectState;
+                    });
+                    if (coordinates){
+                        removeAllMarkers();
+                        map.setCenter({lat: coordinates[1],lng: coordinates[2]});
+                        placeMarker({lat: coordinates[1],lng: coordinates[2]});
+                    }
+                }
+            });
+            document.getElementById('allStatesButton').addEventListener('click',function (){
+                removeAllMarkers();
+                stateCoordinates.forEach(function (state){
+                    var coordinates = { lat: state[1], lng: state[2]};
+                    placeMarker(coordinates);
+                });
+            });
+            placeMarkersForAllStates();
+        }
+
+        function placeMarkersForAllStates(){
+            var bounds = new google.maps.LatLngBounds();
+            stateCoordinates.forEach(function (state){
+                var coordinates = { lat: state[1],lng: state[2]};
+                placeMarker(coordinates);
+                bounds.extend(coordinates);
+            });
+            map.fitBounds(bounds);
+        }
+
+        function placeMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+
+
+        }
+
+        function removeAllMarkers(){
+            markers.forEach(function (marker){
+                marker.setMap(null);
+            });
+            markers = [];
+        }
+    </script>
+    </head>
+
+<body>
+<nav  class="navbar navbar-expand-md  sticky-top bg-secondary">
+    <div class="container">
+        <a th:href="@{/states}" class="navbar-brand text-dark"><i class="fas fa-book-open me-2"></i>States of Burma</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse"
+                data-target="#myNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="myNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="" class="nav-link">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/view-cart}" style="text-decoration: none !important;"><i class="fas fa-cart-arrow-down  ms-3 mt-2 me-2"></i> <span class="h3" th:text="${cartSize}"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="map_div" style="width: 300px; height: 200px" ></div>
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col">
+            <a th:href="@{/states}" id="allStatesButton" class="btn btn-primary">Show All States</a>
+        </div>
+    </div>
+</div>
+
+    <div class="container mt-3">
+        <h1>Find your States</h1>
+        <div class="row">
+            <div class="col">
+                <form action="" th:action="@{/states}" method="get" class="mb-3">
+                    <div class="input-group">
+                        <select  class="form-select" name="name" placeholder="Select Your State" id="selectState">
+                            <option th:each="state : ${allStates}"  th:text="${state.name}"></option>
+                        </select>
+                        <button id="searchButton" class="btn btn-primary">Search</button>
+                    </div>
+
+                </form>
+                <h2>All States</h2>
+                <ul class="list-group">
+                    <li th:each="state : ${filteredStates}" class="list-group-item" th:text="${state.name}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
