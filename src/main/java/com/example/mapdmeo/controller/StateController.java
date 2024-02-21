@@ -3,10 +3,12 @@ package com.example.mapdmeo.controller;
 import com.example.mapdmeo.entity.State;
 import com.example.mapdmeo.service.StateService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -16,22 +18,37 @@ public class StateController {
 
     private final StateService stateService;
     @GetMapping({"/states","/"})
-    public String findByName(@RequestParam(required = false) String name, Model model){
+    public String findAllStatesAndView(@RequestParam(required = false) String name, Model model){
         List<State> allStates = stateService.findAllStates();
-        List<State> filterState;
+        List<State> filteredStates;
 
-        if ( name == null ||name.isEmpty()){
-            filterState = allStates;
-        }else {
-            filterState = stateService.findByName(name);
+        if (name == null || name.isEmpty()){
+            filteredStates = allStates;
+        } else {
+            filteredStates = stateService.findByName(name);
         }
-        model.addAttribute("allStates",allStates);
-        model.addAttribute("filteredStates",filterState);
+        model.addAttribute("allStates", allStates);
+        model.addAttribute("filteredStates", filteredStates);
         return "states";
+    }
+
+
+    @GetMapping("/states/all")
+    @ResponseBody
+    public ResponseEntity<List<State>> findAllStates() {
+        List<State> allStates = stateService.findAllStates();
+        return ResponseEntity.ok(allStates);
+    }
+
+    @GetMapping("/states/filter")
+    @ResponseBody
+    public ResponseEntity<List<State>> findFilteredStates(@RequestParam String name) {
+        List<State> filteredStates = stateService.findByName(name);
+        return ResponseEntity.ok(filteredStates);
     }
     @GetMapping("/map")
     public String showMap(Model model){
-        model.addAttribute("apiKey","Your_API_KEY");
-        return "states";
+        model.addAttribute("apiKey","Your_Api_Key");
+        return "map";
     }
 }
