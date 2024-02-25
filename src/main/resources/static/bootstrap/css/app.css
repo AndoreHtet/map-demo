@@ -2,6 +2,21 @@
     border: 1px solid #ccc; /* Optional: Add a border for better visibility */
 }
 
-.mt-3 {
-    margin-top: 8rem!important;
+#customerTable tbody tr:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
 }
+
+.customer-info {
+    padding: 20px;
+}
+
+.customer-info img {
+    max-width: 100%;
+    height: auto;
+}
+
+.customer-info .card {
+    border: none;
+}
+

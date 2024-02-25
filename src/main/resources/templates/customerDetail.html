@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="customer-info">
+                    <img th:src="@{'images/'+ ${customer.imageName} + '.jpg'}" alt="Customer Image">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="customer-info">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Customer Information</h3>
+                            <p class="card-text"><strong>Name:   </strong><span th:text="${customer.name}"></span>  </p>
+                            <p class="card-text"><strong>Email:   </strong><span th:text="${customer.email}"></span></p>
+                            <p class="card-text"><strong>Phone:   </strong><span th:text="${customer.phone}"></span></p>
+                            <p class="card-text"><strong>Date of Birth:   </strong><span th:text="${customer.dateOfBirth}"></span></p>
+                            <p class="card-text"><strong>Bio Info:   </strong><span th:text="${customer.bioInfo}"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

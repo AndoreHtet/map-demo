@@ -48,7 +48,7 @@ public class StateController {
     }
     @GetMapping("/map")
     public String showMap(Model model){
-        model.addAttribute("apiKey","Your_Api_Key");
+        model.addAttribute("apiKey","AIzaSyBkMUEDzZ_3CHXPpxdzMriVb7a8avF0Wfc");
         return "map";
     }
 }

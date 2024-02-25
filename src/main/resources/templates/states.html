@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>States</title>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css"
-          th:href="@{/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../static/bootstrap/css/app.css"
-    th:href="@{/bootstrap/css/app.css}">
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=Your_API_Key&callback=initMap" async defer></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<body>
+<main role="main">
+
+    <div class="col">
+        <div id="map_div" style="width: 300px; height: 450px; float: right; margin-left: 20px"></div>
+    </div>
+
+
+
+<div class="container" style="margin-top: 2rem;">
+    <a th:href="@{/states}" id="allStatesButton" class="btn btn-primary">Show All States</a>
+    <h1>Find your States</h1>
+    <div class="row">
+        <div class="col">
+            <form action="" th:action="@{/states}" method="get" class="mb-3">
+                <div class="input-group">
+                    <select class="form-select" name="name" placeholder="Select Your State" id="selectState">
+                        <option th:each="state : ${allStates}" th:text="${state.name}"></option>
+                    </select>
+                    <button id="searchButton" type="button" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+            <h3>States : </h3>
+            <ul class="list-group"  id="allStatesList">
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
 
     <script th:inline="javascript">
         var map;
@@ -43,6 +66,7 @@
                             console.error("Invalid latitude or longitude for state:", state.name);
                         }
                     });
+
 
 
                     map.fitBounds(bounds);
@@ -112,64 +136,11 @@
             });
             markers = [];
         }
+        $(window).on('load', function() {
+            initMap();
+        });
     </script>
-</head>
-<body>
-<nav class="navbar navbar-expand-md sticky-top bg-secondary">
-    <div class="container">
-        <a th:href="@{/states}" class="navbar-brand text-dark"><i class="fas fa-book-open me-2"></i>States of Burma</a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="myNav" class="collapse navbar-collapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="" class="nav-link">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/view-cart}" style="text-decoration: none !important;"><i class="fas fa-cart-arrow-down  ms-3 mt-2 me-2"></i> <span class="h3" th:text="${cartSize}"></span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
-<div id="map_div" style="width: 300px; height: 200px; top:auto; right: 20px; position: absolute"></div>
-
-
-<div class="container mt-3">
-    <div class="row">
-        <div class="col">
-            <a th:href="@{/states}" id="allStatesButton" class="btn btn-primary">Show All States</a>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-auto">
-    <h1>Find your States</h1>
-    <div class="row">
-        <div class="col">
-            <form action="" th:action="@{/states}" method="get" class="mb-3">
-                <div class="input-group">
-                    <select class="form-select" name="name" placeholder="Select Your State" id="selectState">
-                        <option th:each="state : ${allStates}" th:text="${state.name}"></option>
-                    </select>
-                    <button id="searchButton" type="button" class="btn btn-primary">Search</button>
-                </div>
-            </form>
-            <h3>States : </h3>
-            <ul class="list-group"  id="allStatesList">
-
-            </ul>
-
-        </div>
-    </div>
-</div>
-
-
-
+</main>
 </body>
 </html>
