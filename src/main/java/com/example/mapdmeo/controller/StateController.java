@@ -1,5 +1,6 @@
 package com.example.mapdmeo.controller;
 
+import com.example.mapdmeo.config.GoogleMapConfig;
 import com.example.mapdmeo.entity.State;
 import com.example.mapdmeo.service.StateService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,8 @@ import java.util.List;
 public class StateController {
 
     private final StateService stateService;
-    @GetMapping({"/states","/"})
+    private final GoogleMapConfig googleMapConfig;
+    @GetMapping("/states")
     public String findAllStatesAndView(@RequestParam(required = false) String name, Model model){
         List<State> allStates = stateService.findAllStates();
         List<State> filteredStates;
@@ -48,7 +50,7 @@ public class StateController {
     }
     @GetMapping("/map")
     public String showMap(Model model){
-        model.addAttribute("apiKey","AIzaSyBkMUEDzZ_3CHXPpxdzMriVb7a8avF0Wfc");
+        model.addAttribute("apiKey",googleMapConfig.geoApiContext());
         return "map";
     }
 }

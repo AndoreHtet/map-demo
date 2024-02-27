@@ -16,7 +16,7 @@ public class Address {
     private String street;
     private String city;
     private String state;
-    private String postalCode;
+    private int postalCode;
     private double latitude;
     private double longitude;
 
@@ -24,7 +24,7 @@ public class Address {
     @JsonBackReference
     private Customer customer;
 
-    public Address(String street, String city, String state, String postalCode, double latitude, double longitude) {
+    public Address(String street, String city, String state, int postalCode, double latitude, double longitude) {
         this.street = street;
         this.city = city;
         this.state = state;

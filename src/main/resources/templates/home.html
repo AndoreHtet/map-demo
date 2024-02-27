@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<main role="main">
+<div class="container">
+
+    <div class="row mt-5">
+        <div class="col-lg-6">
+            <h2>Welcome <span th:text="${#authentication.name}+'!' ?: 'to Our Website'"></span></h2>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi ex necessitatibus neque quae sed tempore.</p>
+            <button class="btn btn-primary btn-lg">Learn More</button>
+        </div>
+        <div class="col">
+            <img src="/images/home.jpg" class="img-fluid">
+        </div>
+    </div>
+
+</div>
+</main>
+
+</body>
+</html>

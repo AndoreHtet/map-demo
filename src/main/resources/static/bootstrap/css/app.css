@@ -19,4 +19,14 @@
 .customer-info .card {
     border: none;
 }
+.color{
+    color: black;
+    transition: all 0.1s ease-in-out;
+}
+
+.text-white:hover{
+    color: black;
+
+}
+
 

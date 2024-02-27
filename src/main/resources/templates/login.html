@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+<link rel="stylesheet" href="../static/bootstrap/css/login.css"
+th:href="@{/bootstrap/css/login.css}">
+<body>
+<main role="main">
+    <div class="container-fluid d-flex justify-content-center align-items-center " style="height: 90vh">
+        <div class="container border rounded  mb-5 py-3" style="max-width: 400px;">
+            <h3 class="text-center mb-4 mt-3">Sign In</h3>
+            <div th:if="${loginError}">
+                <div role="alert" class="alert alert-danger text-center">
+                    <span>Invalid Credentials</span>
+                </div>
+            </div>
+            <div th:if="${param.error}">
+                Invalid username and password.</div>
+            <form th:action="@{/login}" method="post">
+                <div for="username" class="mb-3">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Username">
+                </div>
+                <div for="password" class="mb-3">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+                </div>
+
+                <input type="submit" value="Login" class="btn btn-primary mb-3 w-100">
+
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

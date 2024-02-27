@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+</body>
+<main role="main">
+    <div class="container ">
+        <div class="mt-5 text-center">
+            <h2 class="fw-bold" style="color: #0b5ed7">AGB Communications Co.,Ltd</h2>
+            <div class="my-3">
+                <i style="color: #0b5ed7" class="fas fa-star"></i>
+                <i style="color: #0b5ed7" class="fas fa-star"></i>
+                <i style="color: #0b5ed7" class="fas fa-star"></i>
+                <i style="color: #0b5ed7" class="fas fa-star"></i>
+                <i style="color: #0b5ed7" class="fas fa-star"></i>
+            </div>
+            <h5 style="color: #0d6efd" class="fw-bold">Where your Connection Begin.</h5>
+        </div>
+        <div class="card w-50 m-auto mt-3">
+            <form th:action="@{/guest/save-guest}" th:object="${user}" method="post">
+                <div class="card-body">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" id="firstName" name="firstName" class="form-control">
+
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-control">
+
+                    <label for="accountName" class="form-label">Username</label>
+                    <input  th:field="*{name}" type="text" id="accountName" name="name" class="form-control">
+
+                    <label for="password" class="form-label">Password</label>
+                    <input  th:field="*{password}" type="password" id="password"  name="password" class="form-control">
+
+                    <label for="email" class="form-label">Email</label>
+                    <input  th:field="*{email}" type="email" id="email"  name="password" class="form-control">
+                </div>
+                <div class="card-body">
+                    <input type="submit" class="btn btn btn-primary w-100" value="Register">
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>
+</html>

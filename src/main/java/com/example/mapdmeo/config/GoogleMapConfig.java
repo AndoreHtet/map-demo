@@ -11,7 +11,7 @@ public class GoogleMapConfig {
     @Bean
     public GeoApiContext geoApiContext(){
         return new GeoApiContext.Builder()
-                .apiKey("AIzaSyBkMUEDzZ_3CHXPpxdzMriVb7a8avF0Wfc")
+                .apiKey("YourApiKey")
                 .build();
     }
 }
