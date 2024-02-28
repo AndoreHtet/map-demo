@@ -80,6 +80,7 @@ public class MapDmeoApplication {
 			Address address4 = new Address("Hledan Rd","Yangon","Yangon",11041,16.82600851647623, 96.13007323655538);
 			Address address5 = new Address("Kyee Myintdaing Kanner Rd","Yangon","Yangon",11041,16.805470337064204, 96.12221460664769);
 
+
 			Customer customer1 = new Customer("Andrew","andrew@gmail.com","096764232", LocalDate.of(2002,2,5),
 					"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci alias blanditiis, dolores expedita impedit ipsam libero magnam maiores nemo, nisi provident sint unde. Aperiam illum mollitia rerum sit temporibus!",
 					"andrew");

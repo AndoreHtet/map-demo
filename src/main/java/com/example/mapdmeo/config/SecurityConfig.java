@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .permitAll());
 
         http.authorizeHttpRequests(
-                        c -> c.requestMatchers("/","/home","/bootstrap/**","/guest/**","/signup","/security/**","/images/**","/bootstrap/**","/states/**")
+                        c -> c.requestMatchers("/","/home","/js/**","/bootstrap/**","/guest/**","/signup","/security/**","/images/**","/bootstrap/**","/states/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());

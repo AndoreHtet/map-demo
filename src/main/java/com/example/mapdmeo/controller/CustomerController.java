@@ -87,6 +87,26 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @GetMapping("/customers/in-range")
+    public ResponseEntity<List<Customer>> findCustomersInRange(@RequestParam Double latitude,@RequestParam Double longitude){
+        try {
+           double rangeInKilometers = 1.0;
+           double rangeInDegrees = rangeInKilometers/111.32;
+
+           double minLatitude = latitude - rangeInDegrees;
+           double maxLatitude = latitude + rangeInDegrees;
+           double minLongitude = longitude - rangeInDegrees;
+           double maxLongitude = longitude + rangeInDegrees;
+
+           List<Customer> customersInRange = customerService.findCustomerInRange(minLatitude,maxLatitude,minLongitude,maxLongitude);
+            return ResponseEntity.ok(customersInRange);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
 
 
 
