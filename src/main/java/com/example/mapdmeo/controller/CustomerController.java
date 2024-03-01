@@ -2,15 +2,14 @@ package com.example.mapdmeo.controller;
 
 import com.example.mapdmeo.entity.Address;
 import com.example.mapdmeo.entity.Customer;
+import com.example.mapdmeo.service.AddressService;
 import com.example.mapdmeo.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
+    private final AddressService addressService;
+
 
     @GetMapping({"/customers","/showCustomers"})
     public String showCustomerList(Model model) {
@@ -31,6 +32,46 @@ public class CustomerController {
             return "error";
         }
     }
+    @PostMapping("/customers/save-customer")
+    public String saveCustomer(@ModelAttribute("created_customer") Customer customer) {
+
+       customerService.saveCustomer(customer);
+       return "redirect:/customers/create-address";
+    }
+
+
+    @PostMapping("/customers/save-address")
+    public String saveAddress(@ModelAttribute("address")Address addresses,@RequestParam("customerId") Long customerId){
+        Customer customer = customerService.findCustomerById(customerId);
+        if (customer == null){
+            return "redirect:/error";
+        }
+        Address savedAddress = addressService.saveAddress(addresses);
+        customer.addAddress(savedAddress);
+        customerService.saveCustomer(customer);
+        return "redirect:/showCustomers";
+    }
+    @GetMapping("/customers/create-address")
+    public String createAddress(Model model){
+        List<Customer> customers = customerService.findAllCustomer();
+        model.addAttribute("customers",customers);
+        model.addAttribute("address",new Address());
+        return "addressForm";
+    }
+
+
+    @GetMapping("/customers/create-customer")
+    public String showCustomerForm(Model model) {
+        model.addAttribute("created_customer", new Customer());
+        return "customerForm";
+    }
+
+    @GetMapping("/customers/delete")
+    public String deleteCustomer(@RequestParam("id")Long id){
+
+         return "redirect:/showCustomers";
+    }
+
 
     @GetMapping("/customers/customer-list")
     @ResponseBody

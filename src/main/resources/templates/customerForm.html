@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+
+<link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
+      th:href="@{/bootstrap/css/bootstrap.min.css}">
+<body class="bg-light">
+<main role="main" class="container mt-5 p-5">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Create Customer</h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/customers/save-customer}" th:object="${created_customer}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" th:field="*{name}"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   th:field="*{email}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                   th:field="*{phone}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth:</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth"
+                                   th:field="*{dateOfBirth}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bioInfo">Bio Info:</label>
+                            <textarea class="form-control" id="bioInfo" name="bioInfo"
+                                      th:field="*{bioInfo}"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -22,6 +22,11 @@ public class CustomerService implements CustomerRange{
         return customerRepo.findAll();
     }
 
+
+    public Customer saveCustomer(Customer customer){
+       return customerRepo.save(customer);
+    }
+
     public Customer findCustomerById(Long id) {
         return customerRepo.findById(id).orElseThrow(EntityNotFoundException::new);
     }

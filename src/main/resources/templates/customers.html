@@ -21,8 +21,16 @@
             <label for="longitude">Longitude:</label>
             <input type="text" class="form-control" id="longitude" placeholder="Enter longitude">
         </div>
-        <button class="btn btn-primary mb-1 mt-3" onclick="showBoundaryAndCustomers()">Show Boundary and Customers</button>
-        <a class="btn btn-success mb-1 mt-3" th:href="@{/customers}">Find All Customers</a>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-warning mb-1 mt-3" onclick="showBoundaryAndCustomers()">Show Boundary and Customers</button>
+                <a class="btn btn-success mb-1 mt-3" th:href="@{/customers}">Find All Customers</a>
+            </div>
+            <div class="col-md-6 text-end">
+                <a th:href="@{/customers/create-customer}" class="btn btn-primary mb-1 mt-3">Create Customer</a>
+            </div>
+        </div>
+
         <div id="customer_map" style="width: 100%;z-index: 1; height: 400px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  border: 1px solid #ccc; margin-top: 20px; position: fixed; margin-bottom: 20px;"></div>
 
     </div>
@@ -48,6 +56,7 @@
                             <div class="col text-end">
                                 <h2 id="customerCount"></h2>
                             </div>
+
                         </div>
                     </div>
 
