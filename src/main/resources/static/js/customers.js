@@ -18,11 +18,23 @@ $(document).ready(function() {
             $.get('/customers/autocomplete?searchTerm=' + searchTerm, function(data) {
                 $('#customerTable tbody').empty();
                 data.forEach(function(customer) {
-                    $('#customerTable tbody').append('<tr><td>' + customer.name + '</td><td>' + customer.email + '</td><td>' + customer.phone + '</td><td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td></tr>');
+                    var addressInfo = '';
+                    if (customer.addresses && customer.addresses.length > 0) {
+                        addressInfo = customer.addresses.map(function(address) {
+                            return address.street + ', ' + address.city;
+                        }).join('<br>');
+                    }
+                    var customerRow = '<tr>' +
+                        '<td>' + customer.name + '</td>' +
+                        '<td>' + customer.email + '</td>' +
+                        '<td>' + customer.phone + '</td>' +
+                        '<td>' + addressInfo + '</td>' +
+                        '<td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td>' +
+                        '</tr>';
+                    $('#customerTable tbody').append(customerRow);
                 });
             });
         } else {
-
             fetchAllCustomers();
         }
     });
@@ -33,7 +45,7 @@ function fetchAllCustomers() {
     $.get("/customers/customer-list", function(data) {
         removeAllMarkers();
         displayCustomers(data);
-
+        updateCustomerCount(data.length);
         if (Array.isArray(data) && data.length > 0) {
             var bounds = new google.maps.LatLngBounds();
 
@@ -91,7 +103,6 @@ function searchCustomers() {
             var predefinedZoomLevel = 18;
             map.setZoom(predefinedZoomLevel);
 
-            // Center the map at the first customer's location
             var firstCustomer = data[0];
             if (firstCustomer && firstCustomer.addresses && firstCustomer.addresses.length > 0) {
                 var firstAddress = firstCustomer.addresses[0];
@@ -117,6 +128,8 @@ function showBoundaryAndCustomers() {
 
     removeBoundaryCircles();
 
+    var dynamicRadius = calculateDynamicRadius(latitude, longitude);
+
     var boundary = new google.maps.Circle({
         strokeColor: '#0b5ed7',
         strokeOpacity: 0.8,
@@ -124,8 +137,8 @@ function showBoundaryAndCustomers() {
         fillColor: '#0b5ed7',
         fillOpacity: 0.35,
         map: map,
-        center: {lat: latitude, lng: longitude},
-        radius: 1000
+        center: { lat: latitude, lng: longitude },
+        radius: dynamicRadius
     });
 
 
@@ -158,6 +171,8 @@ function showBoundaryAndCustomers() {
 
             map.fitBounds(bounds);
             map.panToBounds(bounds);
+
+            updateCustomerCount(data.length);
         } else {
             var infowindow = new google.maps.InfoWindow({
                 content: "No customers found in this range"
@@ -165,16 +180,44 @@ function showBoundaryAndCustomers() {
             infowindow.setPosition({lat:latitude,lng:longitude});
             infowindow.open(map);
             console.error("No customers found in the specified area.");
+            updateCustomerCount(data.length);
         }
     }).fail(function() {
         console.error("Failed to fetch customers within the specified range.");
     });
 }
 
+function updateCustomerCount(count) {
+    $('#customerCount').html('<i class="fas fa-user me-2"></i>' + count);
+}
+
+function calculateDynamicRadius(latitude, longitude) {
+    var areaFactor = 1.5;
+    var townshipArea = 5000000 * areaFactor;
+    var townshipAreaKm2 = townshipArea / 1000000;
+    var dynamicRadius = Math.sqrt(townshipAreaKm2 / Math.PI) * 1000;
+
+    return dynamicRadius;
+}
+
 function displayCustomers(customers) {
     $('#customerTable tbody').empty();
     customers.forEach(function(customer) {
-        $('#customerTable tbody').append('<tr><td>' + customer.name + '</td><td>' + customer.email + '</td><td>' + customer.phone + '</td><td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td></tr>');
+        var addressInfo = '';
+        if (customer.addresses && customer.addresses.length > 0) {
+            addressInfo = customer.addresses.map(function(address) {
+                return address.street + ', ' + address.city;
+            }).join('<br>');
+        }
+
+        var customerRow = '<tr>' +
+            '<td>' + customer.name + '</td>' +
+            '<td>' + customer.email + '</td>' +
+            '<td>' + customer.phone + '</td>' +
+            '<td>' + addressInfo + '</td>' +
+            '<td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td>' +
+            '</tr>';
+        $('#customerTable tbody').append(customerRow);
     });
 }
 
@@ -190,6 +233,7 @@ function placeMarker(location, name) {
     });
     markers.push(marker);
 }
+
 
 function removeBoundaryCircles() {
     map.overlayMapTypes.forEach(function(overlay) {

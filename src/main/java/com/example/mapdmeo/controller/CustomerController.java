@@ -26,9 +26,8 @@ public class CustomerController {
             model.addAttribute("customers", customers);
             return "customers";
         } catch (Exception e) {
-            // Log the exception for debugging purposes
             e.printStackTrace();
-            // You can return an error view here if needed
+
             return "error";
         }
     }
@@ -40,7 +39,7 @@ public class CustomerController {
             List<Customer> customerList = customerService.findAllCustomer();
             return ResponseEntity.ok(customerList);
         } catch (Exception e) {
-            // Log the exception for debugging purposes
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -52,7 +51,7 @@ public class CustomerController {
             List<Address> addresses = customerService.findCustomerAddresses(customerId);
             return ResponseEntity.ok(addresses);
         } catch (Exception e) {
-            // Log the exception for debugging purposes
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -71,7 +70,7 @@ public class CustomerController {
             List<Customer> matchedCustomers = customerService.findCustomersByNameContaining(searchTerm);
             return ResponseEntity.ok(matchedCustomers);
         } catch (Exception e) {
-            // Log the exception for debugging purposes
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -82,7 +81,7 @@ public class CustomerController {
             List<Customer> foundCustomer = customerService.findByCustomerName(name);
             return ResponseEntity.ok(foundCustomer);
         } catch (Exception e) {
-            // Log the exception for debugging purposes
+
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -90,7 +89,7 @@ public class CustomerController {
     @GetMapping("/customers/in-range")
     public ResponseEntity<List<Customer>> findCustomersInRange(@RequestParam Double latitude,@RequestParam Double longitude){
         try {
-           double rangeInKilometers = 1.0;
+           double rangeInKilometers = 1.1;
            double rangeInDegrees = rangeInKilometers/111.32;
 
            double minLatitude = latitude - rangeInDegrees;
@@ -106,8 +105,40 @@ public class CustomerController {
         }
     }
 
-
-
+//      When you use this controller,you must need biilling for google api
+//    @GetMapping("/customers/in-range")
+//    public ResponseEntity<List<Customer>> findCustomersInRange(@RequestParam Double latitude,@RequestParam Double longitude){
+//        try {
+//            GeoApiContext context = new GeoApiContext.Builder().apiKey("Your_Api_Key").build();
+//            GeocodingResult[] targetResults = GeocodingApi.geocode(context, latitude + "," + longitude).await();
+//            if (targetResults.length == 0) {
+//                // Handle error: Unable to geocode target location
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//            }
+//            LatLng targetLatLng = targetResults[0].geometry.location;
+//            double latDistanceOneDegree = 111.32; // Kilometers per degree of latitude
+//            double lonDistanceOneDegree = 111.32 * Math.cos(Math.toRadians(targetLatLng.lat)); // Kilometers per degree of longitude
+//
+//            // Calculate the dynamic range based on target location
+//            double dynamicRadius = 1.1; // Initial range in kilometers
+//            double rangeInDegrees = dynamicRadius / latDistanceOneDegree; // Convert range to degrees
+//
+//            // Calculate range boundaries
+//            double minLatitude = latitude - rangeInDegrees;
+//            double maxLatitude = latitude + rangeInDegrees;
+//            double minLongitude = longitude - rangeInDegrees / lonDistanceOneDegree;
+//            double maxLongitude = longitude + rangeInDegrees / lonDistanceOneDegree;
+//
+//            // Find customers within the dynamic range
+//            List<Customer> customersInRange = customerService.findCustomerInRange(minLatitude, maxLatitude, minLongitude, maxLongitude);
+//
+//            return ResponseEntity.ok(customersInRange);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//
+//    }
 
 
 }

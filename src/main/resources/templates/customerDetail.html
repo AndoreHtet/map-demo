@@ -22,6 +22,19 @@
                             <p class="card-text"><strong>Bio Info:   </strong><span th:text="${customer.bioInfo}"></span></p>
                         </div>
                     </div>
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div th:each="address : ${customer.addresses}">
+                                <h4 class="mt-4">Address</h4>
+                                <p><strong>Street:  </strong><span th:text="${address.street}"></span></p>
+                                <p><strong>City:    </strong><span th:text="${address.city}"></span></p>
+                                <p><strong>State:   </strong><span th:text="${address.state}"></span></p>
+                                <p><strong>PostalCode:  </strong><span th:text="${address.postalCode}"></span></p>
+                                <p><strong>Latitude:    </strong><span th:text="${address.latitude}"></span></p>
+                                <p><strong>Longitude:   </strong><span th:text="${address.longitude}"></span></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
