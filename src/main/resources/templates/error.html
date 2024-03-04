@@ -3,12 +3,21 @@
 
 <body class="bg-light">
 
-<main class="container mt-5">
-    <div class="text-center">
-        <h1>Error Page</h1>
-        <p>Message :: <span th:text="${message}"></span></p>
+<main role="main">
+    <div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-6">
+        <h1 class="text-danger">403</h1>
+        <p style="color: #997404">Message :: <span th:text="${message}"></span></p>
+        <p style="color: #997404">We are sorry,but you don't have access to this page or resource.</p>
+            <a th:href="@{/home}" class="btn btn-primary btn-lg">Back to Home Page</a>
     </div>
-    <a th:href="@{/home}" >GO Home</a>
+    <div class="col">
+        <img src="/images/security.jpg" class="img-fluid">
+    </div>
+    </div>
+    </div>
+
 </main>
 
 </body>

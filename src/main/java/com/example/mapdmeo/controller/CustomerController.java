@@ -7,6 +7,7 @@ import com.example.mapdmeo.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class CustomerController {
     private final AddressService addressService;
 
 
+    @Secured({"USER","ADMIN"})
     @GetMapping({"/customers","/showCustomers"})
     public String showCustomerList(Model model) {
         try {
@@ -32,6 +34,8 @@ public class CustomerController {
             return "error";
         }
     }
+
+    @Secured("ADMIN")
     @PostMapping("/customers/save-customer")
     public String saveCustomer(@ModelAttribute("created_customer") Customer customer) {
 
@@ -39,7 +43,7 @@ public class CustomerController {
        return "redirect:/customers/create-address";
     }
 
-
+    @Secured("ADMIN")
     @PostMapping("/customers/save-address")
     public String saveAddress(@ModelAttribute("address")Address addresses,@RequestParam("customerId") Long customerId){
         Customer customer = customerService.findCustomerById(customerId);
@@ -51,6 +55,7 @@ public class CustomerController {
         customerService.saveCustomer(customer);
         return "redirect:/showCustomers";
     }
+    @Secured("ADMIN")
     @GetMapping("/customers/create-address")
     public String createAddress(Model model){
         List<Customer> customers = customerService.findAllCustomer();
@@ -59,13 +64,13 @@ public class CustomerController {
         return "addressForm";
     }
 
-
+    @Secured("ADMIN")
     @GetMapping("/customers/create-customer")
     public String showCustomerForm(Model model) {
         model.addAttribute("created_customer", new Customer());
         return "customerForm";
     }
-
+    @Secured("ADMIN")
     @GetMapping("/customers/delete")
     public String deleteCustomer(@RequestParam("id")Long id){
 
@@ -73,6 +78,7 @@ public class CustomerController {
     }
 
 
+    @Secured({"ADMIN","USER"})
     @GetMapping("/customers/customer-list")
     @ResponseBody
     public ResponseEntity<List<Customer>> findAllCustomer(){
@@ -86,6 +92,7 @@ public class CustomerController {
         }
     }
 
+    @Secured({"ADMIN","USER"})
     @GetMapping("/customers/address-list")
     public ResponseEntity<List<Address>> getCustomerAddresses(@RequestParam Long customerId) {
         try {
@@ -97,13 +104,14 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @Secured({"USER","ADMIN"})
     @GetMapping("/customer-detail")
     public String customerDetails(@RequestParam("id")Long id,Model model){
         model.addAttribute("customer",customerService.findCustomerById(id));
         return "customerDetail";
     }
 
-
+    @Secured({"USER","ADMIN"})
     @GetMapping("/customers/autocomplete")
     @ResponseBody
     public ResponseEntity<List<Customer>> autocompleteCustomers(@RequestParam String searchTerm) {
@@ -116,6 +124,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @Secured({"USER","ADMIN"})
     @GetMapping("/customers/found-customer")
     public ResponseEntity<List<Customer>> findCustomerByName(@RequestParam String name){
         try {
@@ -127,6 +136,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @Secured({"USER","ADMIN"})
     @GetMapping("/customers/in-range")
     public ResponseEntity<List<Customer>> findCustomersInRange(@RequestParam Double latitude,@RequestParam Double longitude){
         try {
