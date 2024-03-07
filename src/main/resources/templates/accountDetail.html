@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<link rel="stylesheet" href="../../static/bootstrap/css/bootstrap.min.css"
+      th:href="@{/bootstrap/css/bootstrap.min.css}">
 
 <body>
 <main role="main">
@@ -8,35 +11,52 @@
             <div class="card-header bg-primary text-white">
                 <h5 class="card-title">User Details</h5>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="firstname">FirstName:</label>
-                            <input type="text" class="form-control" id="firstname" th:value="${guest.firstName}" readonly>
+            <form th:action="@{/user/save-user}" method="post" th:object="${user}">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname">FirstName:</label>
+                                <input type="text" class="form-control" id="firstname" th:value="${guest.firstName}" th:field="*{guest.firstName}">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname">LastName:</label>
+                                <input type="text" class="form-control" id="lastname" th:value="${guest.lastName}" th:field="*{guest.lastName}">
+                            </div>
+                            <div class="form-group">
+                                <label for="accountName">Account Name:</label>
+                                <input type="text" class="form-control" id="accountName" th:value="${guest.securityUser.name}" th:field="*{guest.securityUser.name}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="text" class="form-control" id="email" th:value="${guest.securityUser.email}" th:field="*{guest.securityUser.email}">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="lastname">LastName:</label>
-                            <input type="text" class="form-control" id="lastname" th:value="${guest.lastName}" readonly>
+                        <!-- Display role dropdown for admin -->
+                        <div class="col-md-6" th:if="${isAdmin}">
+                            <div class="form-group">
+                                <label for="roles">Roles:</label>
+                                <select class="form-control" name="roles" id="roles">
+                                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.roleName}" th:selected="${user.roles != null && user.roles.contains(role)}"></option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="accountName">Account Name:</label>
-                            <input type="text" class="form-control" id="accountName" th:value="${guest.securityUser.name}" readonly>
-                        </div>    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="text" class="form-control" id="email" th:value="${guest.securityUser.email}" readonly>
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="roles">Roles:</label>
-                            <ul class="list-group">
-                                <li th:each="role : ${guest.securityUser.roles}" id="roles" class="list-group-item" th:text="${role.roleName}"></li>
-                            </ul>
+                        <!-- Display roles as text for regular users -->
+                        <div class="col-md-6" th:if="${not isAdmin}">
+                            <div class="form-group">
+                                <label for="role">Roles:</label>
+                                <ul class="list-group">
+                                    <li th:each="role : ${guest.securityUser.roles}" id="role" class="list-group-item" th:text="${role.roleName}"></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="card-footer">
+                    <!-- Save button -->
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </main>

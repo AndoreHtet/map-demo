@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:replace="layouts/masterLayout :: layout(~{::main})" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<main role="main">
+    <h2 class="text-center" style="color: #343a40">Click Your Location!!!</h2>
+    <div class="container" style="position: relative;">
+        <div id="search_container" style="position: relative; top: 10px; left: 10px;">
+            <input type="text" id="search-input" placeholder="Search for streets or townships">
+            <button id="search_button">Search</button>
+        </div>
+        <div id="location_map" style="width: 100%;z-index: 1; height: 400px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  border: 1px solid #ccc; margin-top: 20px; position: fixed; margin-bottom: 20px; cursor: default;"></div>
+
+    </div>
+    <script th:src="@{/js/location.js}">
+
+    </script>
+</main>
+
+</body>
+</html>

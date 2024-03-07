@@ -2,6 +2,7 @@ package com.example.mapdmeo.controller;
 
 import com.example.mapdmeo.entity.Address;
 import com.example.mapdmeo.entity.Customer;
+import com.example.mapdmeo.repo.CustomerRepo;
 import com.example.mapdmeo.service.AddressService;
 import com.example.mapdmeo.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CustomerController {
     private final CustomerService customerService;
     private final AddressService addressService;
+    private final CustomerRepo customerRepo;
 
 
     @Secured({"USER","ADMIN"})
@@ -57,10 +59,14 @@ public class CustomerController {
     }
     @Secured("ADMIN")
     @GetMapping("/customers/create-address")
-    public String createAddress(Model model){
+    public String createAddress(@RequestParam(required = false) Double latitude,
+            @RequestParam(required = false) Double longitude,
+            Model model){
         List<Customer> customers = customerService.findAllCustomer();
         model.addAttribute("customers",customers);
         model.addAttribute("address",new Address());
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
         return "addressForm";
     }
 
@@ -73,7 +79,7 @@ public class CustomerController {
     @Secured("ADMIN")
     @GetMapping("/customers/delete")
     public String deleteCustomer(@RequestParam("id")Long id){
-
+         customerRepo.deleteById(id);
          return "redirect:/showCustomers";
     }
 

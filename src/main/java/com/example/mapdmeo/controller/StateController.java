@@ -48,9 +48,5 @@ public class StateController {
         List<State> filteredStates = stateService.findByName(name);
         return ResponseEntity.ok(filteredStates);
     }
-    @GetMapping("/map")
-    public String showMap(Model model){
-        model.addAttribute("apiKey",googleMapConfig.geoApiContext());
-        return "map";
-    }
+
 }

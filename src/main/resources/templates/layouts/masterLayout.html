@@ -4,9 +4,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>masterLayout</title>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=YourApiKey&callback=initMap">
-    </script>
+<!--    <script async defer-->
+<!--            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkMUEDzZ_3CHXPpxdzMriVb7a8avF0Wfc&callback=initMap">-->
+<!--    </script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YourApiKey&libraries=places&callback=initMap" async
+            defer></script>
+
 
 
 
@@ -48,6 +51,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
                     </li>
                     <li class="me-3 fs-5 fw-medium view" sec:authorize="authenticated">
                         <a th:href="@{/user/user-detail}" class="text-decoration-none  text-white px-3 py-2 rounded"><i class="fas fa-user me-2"></i>Account</a>
+                    </li>
+                    <li class="me-3 fs-5 fw-medium view" sec:authorize="hasAuthority('ADMIN')">
+                    <a th:href="@{/user/user-management}" class="text-decoration-none  text-white px-3 py-2 rounded"><i class="fa-solid fa-users me-2"></i>User Management</a>
                     </li>
                     <li class="me-3 fs-5 fw-medium view" sec:authorize="authenticated">
                         <a th:href="@{/logout}" class="text-decoration-none  text-white px-3 px-3 py-2 rounded" ><i class="fas fa-sign-out-alt me-2"></i>Logout</a>

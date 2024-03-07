@@ -6,9 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SecurityUserRepo extends JpaRepository<SecurityUser,Integer> {
 
     @Query("SELECT u FROM SecurityUser u WHERE u.name = :name")
     public SecurityUser getSecurityUserByUsername(@Param("name")String name);
+
+
+    Optional<SecurityUser> findByName(String name);
 }

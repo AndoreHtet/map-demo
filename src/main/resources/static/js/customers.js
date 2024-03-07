@@ -30,6 +30,7 @@ $(document).ready(function() {
                         '<td>' + customer.phone + '</td>' +
                         '<td>' + addressInfo + '</td>' +
                         '<td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td>' +
+                        '<td><a href="#" class="btn btn-danger btn-sm" onclick="deleteCustomer(' + customer.id + ')">Delete</a></td>'+
                         '</tr>';
                     $('#customerTable tbody').append(customerRow);
                 });
@@ -216,6 +217,7 @@ function displayCustomers(customers) {
             '<td>' + customer.phone + '</td>' +
             '<td>' + addressInfo + '</td>' +
             '<td><a href="#" class="btn btn-primary btn-sm" onclick="viewCustomerDetail(' + customer.id + ')">Detail</a></td>' +
+            '<td ><a href="#" class="btn btn-danger btn-sm" onclick="deleteCustomer(' + customer.id + ')">Delete</a></td>'+
             '</tr>';
         $('#customerTable tbody').append(customerRow);
     });
@@ -223,6 +225,10 @@ function displayCustomers(customers) {
 
 function viewCustomerDetail(customerId) {
     window.location.href = '/customer-detail?id=' + customerId;
+}
+
+function deleteCustomer(customerId){
+    window.location.href='/customers/delete?id='+customerId;
 }
 
 function placeMarker(location, name) {
